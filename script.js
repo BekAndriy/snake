@@ -1,11 +1,19 @@
 var canvas = $("#canvas")[0];
 var ctx = canvas.getContext('2d');
 
-var canvasWidth = ctx.canvas.width = $(window).width()-50;
-var canvasHeight = ctx.canvas.height = '500';
+var size = document.getElementById('canvas').getBoundingClientRect()
+
+var canvasWidth = ctx.canvas.width = (Math.round(size.width/20))*20;
+var canvasHeight = ctx.canvas.height = (Math.round(size.height/20))*20;
+
 var grid = 20;
+
 var repeatX = canvasWidth / grid;
 var repeatY = canvasHeight / grid;
+
+
+
+
 
 function initWorm(){
     paramWorm = { 
@@ -39,6 +47,7 @@ function initWorm(){
         pointToGet: [],
     }
 }
+
 var paramWorm;
 initWorm();
 
@@ -274,7 +283,8 @@ $('body').on('click','.restart-game', function(){
 });
 
 var animationWorm
-function init(){
-    setRandomPoint();
+function init(params){
+    if ( $('.restart-game:visible').length < 1 )
+        setRandomPoint();
     animationWorm = setInterval(function(){ handleAnimateWorm(); }, result.spead);
 }

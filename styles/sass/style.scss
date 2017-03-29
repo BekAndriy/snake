@@ -1,0 +1,31 @@
+.game-wrap {
+    max-width: 950px;
+    width: calc(100vw - 50px);
+    margin: 0 auto;
+    height: calc(100vh - 100px);
+    max-height: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    #canvas {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        min-width: 100%;
+        min-height: 100%;
+        border: 2px solid rgba(0,0,0,0.5)
+    }
+    .control-game {
+        z-index: 10
+    }
+}
+
+@media (max-width: 1000px) {
+    .game-wrap {
+        max-width: calc(100vw - 50px);
+    }
+}

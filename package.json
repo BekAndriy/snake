@@ -1,0 +1,26 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "Snake",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BekAndriy/snake.git"
+  },
+  "keywords": [
+    "snake"
+  ],
+  "author": "Bek Andriy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BekAndriy/snake/issues"
+  },
+  "homepage": "https://github.com/BekAndriy/snake#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0"
+  }
+}
