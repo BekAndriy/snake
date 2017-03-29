@@ -2,7 +2,7 @@ var canvas = $("#canvas")[0];
 var ctx = canvas.getContext('2d');
 
 var size = document.getElementById('game-wrap').getBoundingClientRect()
-console.log(size);
+
 var canvasWidth = ctx.canvas.width = ((Math.round(size.width/20))-1)*20;
 var canvasHeight = ctx.canvas.height = ((Math.round(size.height/20))-1)*20;
 
@@ -11,8 +11,13 @@ var grid = 20;
 var repeatX = canvasWidth / grid;
 var repeatY = canvasHeight / grid;
 
-
-
+$(function() {
+    var el = document.getElementsByTagName("canvas")[0];
+    el.addEventListener("touchstart", handleMove, false);
+    // el.addEventListener("touchend", handleMove, false);
+    // el.addEventListener("touchcancel", handleMove, false);
+    // el.addEventListener("touchmove", handleMove, false);
+})
 
 
 function initWorm(){
@@ -206,6 +211,8 @@ $(window).on('keydown', function(event){
     var pressKey = event.keyCode ? event.keyCode : event.which;
     var currentDirect = paramWorm.pathCoordinat[paramWorm.pathCoordinat.length-1].nextPos;
 
+    console.log(pressKey)
+
     if ( currentDirect == pressKey) return; 
     if ( currentDirect == 40 && pressKey == 38) return;
     if ( currentDirect == 38 && pressKey == 40) return;
@@ -264,11 +271,13 @@ $('body').on('click','.start-game', function(){
     
     if ($('.game-over:visible').length > 0){
         initWorm();
-        console.log('sdfsdfsdf')
         resetResult();
         $('.game-over:visible').remove();
     }
-        
+
+    if ($('.title-start-game').length)
+        $('.title-start-game').remove();
+
     init(); 
     $('.start-game').hide();
     $('.stop-game').show();
@@ -306,4 +315,58 @@ function resetResult(){
     result.lvl =  1;
     result.nextLvlPoints = 10;
     $('.result span').html('0');
+}
+
+function handleMove(evn) {
+    evn.preventDefault();
+    var touches = evn.changedTouches[0];
+
+    var pageX = touches.pageX;
+    var pageY = touches.pageY;
+
+    var offsetParams = $('#canvas').offset()
+    var x = paramWorm.pathCoordinat[0].x + offsetParams.left;
+    var y = paramWorm.pathCoordinat[0].y + offsetParams.top;
+    var orientation;
+    if ( paramWorm.pathCoordinat[0].nextPos == 37 || paramWorm.pathCoordinat[0].nextPos == 39 ) {
+        orientation = true;
+    }
+    if (paramWorm.pathCoordinat[0].nextPos == 40 || paramWorm.pathCoordinat[0].nextPos == 38) {
+        orientation = false;
+    }
+
+    var e = jQuery.Event("keydown");
+
+    if ( orientation ) {
+        console.log('hor', x > pageX)
+        if (x > pageX) {
+            // e.which = 38; 
+            // e.keyCode = 38;
+            // $(window).trigger(e);
+            $(window).trigger(jQuery.Event( 'keydown', { which: 38 } ));
+        } else {
+
+            // e.which = 40;
+            // e.keyCode =40;
+            // $(window).trigger(e);
+             $(window).trigger(jQuery.Event( 'keydown', { which: 40 } ));
+        }
+    } else {
+        console.log('vert', y > pageY)
+        if (y > pageY) {
+            // e.which = 37; 
+            // e.keyCode = 37;
+            // $(window).trigger(e);
+             $(window).trigger(jQuery.Event( 'keydown', { which: 37 } ));
+        } else {
+            
+
+            $(window).trigger(jQuery.Event( 'keydown', { which: 39 } ));
+            // e.which = 39;
+            // e.keyCode = 39
+            // $(window).trigger(e);
+    
+        }
+    }
+    e = '';
 }
