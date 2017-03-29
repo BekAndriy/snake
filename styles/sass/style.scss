@@ -1,4 +1,18 @@
+
+html, body {
+    overflow: hidden;
+}
+
 .game-wrap {
+    & * {
+        font-family: 'Raleway', sans-serif;
+    }
+    .title {
+        position: absolute;
+        bottom: 100%;
+        font-size: 40px;
+        font-weight: 800;
+    }
     max-width: 950px;
     width: calc(100vw - 50px);
     margin: 0 auto;
@@ -10,22 +24,80 @@
     transform: translate(-50%, -50%);
 
     #canvas {
+        display: inline-block;
         position: absolute;
         top: 0px;
-        left: 0px;
+        left: 50%;
         right: 0px;
-        bottom: 0px;
         min-width: 100%;
         min-height: 100%;
+        transform: translateX(-50%);
         border: 2px solid rgba(0,0,0,0.5)
     }
     .control-game {
-        z-index: 10
+        z-index: 10;
+        position: absolute;
+        padding: 15px;
+        top: 100%;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+        span {
+            font-weight: 600;
+        }
+        .btn-controll{
+            float: right;
+
+            button {
+                background: #000;
+                border: none;
+                color: #FFF;
+                line-height: 30px;
+                padding: 0 15px;
+                letter-spacing: 1px;
+                margin-left: 10px;
+            }
+        }
+        .result {
+            float: left;
+        }
+        .best-result {
+            float: none;
+            display: inline-block;
+            text-align: center;
+        }
+    }
+    .game-over {
+        position: absolute;
+        line-height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 28px;
+        min-width: 250px;
+        text-align: center;
     }
 }
 
 @media (max-width: 1000px) {
     .game-wrap {
         max-width: calc(100vw - 50px);
+    }
+}
+@media (max-width: 500px){
+    .game-wrap {
+        .control-game {
+            .best-result, .result{
+                display: block;
+                float: none;
+                text-align: left;
+            }
+        }
+    }
+}
+
+@media (max-height: 765px){
+    .game-wrap {
+        max-height: calc(100vh - 180px);
     }
 }

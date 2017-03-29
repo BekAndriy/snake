@@ -1,10 +1,10 @@
 var canvas = $("#canvas")[0];
 var ctx = canvas.getContext('2d');
 
-var size = document.getElementById('canvas').getBoundingClientRect()
-
-var canvasWidth = ctx.canvas.width = (Math.round(size.width/20))*20;
-var canvasHeight = ctx.canvas.height = (Math.round(size.height/20))*20;
+var size = document.getElementById('game-wrap').getBoundingClientRect()
+console.log(size);
+var canvasWidth = ctx.canvas.width = ((Math.round(size.width/20))-1)*20;
+var canvasHeight = ctx.canvas.height = ((Math.round(size.height/20))-1)*20;
 
 var grid = 20;
 
@@ -146,7 +146,14 @@ function checkEndGame(){
 
 function showGameOver(){
     clearInterval(animationWorm);
-    $('.game-wrap').append('<div>Game Over</div>');
+
+    if ($('.game-over').length < 1)
+        $('.game-wrap').append('<div class="game-over">Game Over</div>');
+
+    $('.restart-game:visible').css('display', 'none');
+    $('.stop-game:visible').css('display', 'none');
+    $('.start-game').css('display', 'inline-block')
+
     $('.result span').html(result.points);
     if (Number($('.best-result span').html()) < result.points){
         result.bestPoints = result.points;
@@ -154,7 +161,6 @@ function showGameOver(){
         localStorage.setItem('wormResult', String(result.points));
     }
 
-    console.log(paramWorm);
     return true;
 }
 
@@ -246,7 +252,7 @@ function setRandomPoint(){
 }
 
 $(function(){
-    $('.game-wrap').append('<div class="control-game"><div class="best-result">You BEST result: <span></span></div><div class="result">Result :<span></span></div><div class="btn-controll"><button type="button" class="restart-game">Restart</button><button type="button" class="start-game">Start</button><button type="button" class="stop-game">Stop</button></div></div>');
+    $('.game-wrap').append('<div class="control-game"><div class="result">Result :<span>0</span></div><div class="best-result">You BEST result: <span></span></div><div class="btn-controll"><button type="button" class="restart-game">Restart</button><button type="button" class="start-game">Start</button><button type="button" class="stop-game">Stop</button></div></div>');
     if (localStorage.getItem('wormResult')) {
         $('.best-result span').html(localStorage.getItem('wormResult'));
     }
@@ -255,6 +261,14 @@ $(function(){
 })
 
 $('body').on('click','.start-game', function(){ 
+    
+    if ($('.game-over:visible').length > 0){
+        initWorm();
+        console.log('sdfsdfsdf')
+        resetResult();
+        $('.game-over:visible').remove();
+    }
+        
     init(); 
     $('.start-game').hide();
     $('.stop-game').show();
@@ -270,11 +284,7 @@ $('body').on('click','.stop-game', function(){
 $('body').on('click','.restart-game', function(){
     clearInterval(animationWorm);
     initWorm();
-    result.lengthWorm = 5;
-    result.points = 0;
-    result.spead = 500;
-    result.lvl =  1;
-    result.nextLvlPoints = 10;
+    resetResult();
     init();
     clearInterval(animationWorm);
     $('.start-game').show();
@@ -287,4 +297,13 @@ function init(params){
     if ( $('.restart-game:visible').length < 1 )
         setRandomPoint();
     animationWorm = setInterval(function(){ handleAnimateWorm(); }, result.spead);
+}
+
+function resetResult(){
+    result.lengthWorm = 5;
+    result.points = 0;
+    result.spead = 500;
+    result.lvl =  1;
+    result.nextLvlPoints = 10;
+    $('.result span').html('0');
 }
