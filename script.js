@@ -72,7 +72,8 @@ function checkLVL(){
     if (result.lengthWorm >= result.nextLvlPoints && result.spead > 100){
         clearInterval(animationWorm);
         result.spead -= 100;
-        result.nextLvlPoints += 5; 
+        result.nextLvlPoints += 5;
+        result.lvl += 1; 
         clearInterval(animationWorm);
         init();
     }
@@ -208,10 +209,12 @@ function handleAnimateWorm(){
 }
 
 $(window).on('keydown', function(event){
+    
+    if ($('.game-over:visible').length)
+        return;
+
     var pressKey = event.keyCode ? event.keyCode : event.which;
     var currentDirect = paramWorm.pathCoordinat[paramWorm.pathCoordinat.length-1].nextPos;
-
-    console.log(pressKey)
 
     if ( currentDirect == pressKey) return; 
     if ( currentDirect == 40 && pressKey == 38) return;
@@ -239,6 +242,7 @@ function checkDeactivePoint(){
             currentWormPoint.unshift(Object.assign({},newPoint[i]));
             setRandomPoint();
             checkLVL();
+            $('.lvl').html(result.lvl);
         }
     }
 }
@@ -259,7 +263,7 @@ function setRandomPoint(){
 }
 
 $(function(){
-    $('.game-wrap').append('<div class="control-game"><div class="result">Result :<span>0</span></div><div class="best-result">You BEST result: <span></span></div><div class="btn-controll"><button type="button" class="restart-game">Restart</button><button type="button" class="start-game">Start</button><button type="button" class="stop-game">Stop</button></div></div>');
+    $('.game-wrap').append('<div class="control-game"><div class="result">Result :<span>0</span> (lvl:<i class="lvl">1</i>)</div><div class="best-result">You BEST result: <span></span></div><div class="btn-controll"><button type="button" class="restart-game">Restart</button><button type="button" class="start-game">Start</button><button type="button" class="stop-game">Stop</button></div></div>');
     if (localStorage.getItem('wormResult')) {
         $('.best-result span').html(localStorage.getItem('wormResult'));
     }
@@ -315,6 +319,7 @@ function resetResult(){
     result.lvl =  1;
     result.nextLvlPoints = 10;
     $('.result span').html('0');
+    $('.lvl').html('1');
 }
 
 function handleMove(evn) {
