@@ -319,53 +319,39 @@ function resetResult(){
 
 function handleMove(evn) {
     evn.preventDefault();
+
     var touches = evn.changedTouches[0];
+    var offsetCanv = $('#canvas').offset();
+    var pageX = touches.pageX - offsetCanv.left;
+    var pageY = touches.pageY - offsetCanv.top;
+    var caunter = paramWorm.pathCoordinat.length - 1
+    var x = paramWorm.pathCoordinat[caunter].x + 20;
+    var y = paramWorm.pathCoordinat[caunter].y + 15;
+    var orientation = true;
 
-    var pageX = touches.pageX;
-    var pageY = touches.pageY;
-
-    var offsetParams = $('#canvas').offset()
-    var x = paramWorm.pathCoordinat[0].x + offsetParams.left;
-    var y = paramWorm.pathCoordinat[0].y + offsetParams.top;
-    var orientation;
-    if ( paramWorm.pathCoordinat[0].nextPos == 37 || paramWorm.pathCoordinat[0].nextPos == 39 ) {
+    if ( paramWorm.pathCoordinat[caunter].nextPos == 37 || paramWorm.pathCoordinat[caunter].nextPos == 39 ) {
         orientation = true;
     }
-    if (paramWorm.pathCoordinat[0].nextPos == 40 || paramWorm.pathCoordinat[0].nextPos == 38) {
+    if (paramWorm.pathCoordinat[caunter].nextPos == 40 || paramWorm.pathCoordinat[caunter].nextPos == 38) {
         orientation = false;
     }
 
     var e = jQuery.Event("keydown");
 
-    if ( orientation ) {
-        console.log('hor', x > pageX)
-        if (x > pageX) {
-            // e.which = 38; 
-            // e.keyCode = 38;
-            // $(window).trigger(e);
-            $(window).trigger(jQuery.Event( 'keydown', { which: 38 } ));
-        } else {
-
-            // e.which = 40;
-            // e.keyCode =40;
-            // $(window).trigger(e);
-             $(window).trigger(jQuery.Event( 'keydown', { which: 40 } ));
-        }
-    } else {
-        console.log('vert', y > pageY)
-        if (y > pageY) {
-            // e.which = 37; 
-            // e.keyCode = 37;
-            // $(window).trigger(e);
-             $(window).trigger(jQuery.Event( 'keydown', { which: 37 } ));
-        } else {
-            
-
+    if ( !orientation ) { 
+        
+        if (x < pageX) {
             $(window).trigger(jQuery.Event( 'keydown', { which: 39 } ));
-            // e.which = 39;
-            // e.keyCode = 39
-            // $(window).trigger(e);
-    
+        } 
+        if(x > pageX){
+             $(window).trigger(jQuery.Event( 'keydown', { which: 37 } ));
+        }
+    } else { 
+        if (y < pageY) {
+             $(window).trigger(jQuery.Event( 'keydown', { which: 40 } ));
+        } 
+        if(y > pageY){
+            $(window).trigger(jQuery.Event( 'keydown', { which: 38 } ));
         }
     }
     e = '';
